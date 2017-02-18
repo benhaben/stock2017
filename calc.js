@@ -21,23 +21,13 @@ function getRate() {
     return nums[index];
 }
 
+const TRY_NUMBER = 1000;
+const TOTAL = 50000;
 
 
-function AllIn() {
+// ----------------------------------------------
 
-    var money = 50000;
-    for (var i = 0; i < 1000; i++) {
-        money = money + money * getRate() / 100;
-        money = parseInt(money);
-    }
-    // console.log(`the money_a is ${money}`);
-    return money;
-};
-
-
-// ----------------------------------------------分仓操作效果并不明显
-
-function Partition() {
+function Partition(partitionNumber) {
     function calc1(m, n) {
         for (var i = 0; i < n; i++) {
             m = m + m * getRate() / 100;
@@ -45,19 +35,20 @@ function Partition() {
         }
         return m;
     }
+    var onePart = TOTAL/partitionNumber;
     var money1 = 0;
-    for (var i = 0; i < 5; i++) {
-        money1 += calc1(10000, 1000);
+    for (var i = 0; i < partitionNumber; i++) {
+        money1 += calc1(onePart, TRY_NUMBER);
     }
     // console.log(`the money_b is ${money1}`);
     return money1;
 };
 
-// -----------------------------------------------比较两种操作1万次
+// -----------------------------------------------比较两种操作1万次, 分仓操作效果确实可以降低系统风险，让收益更多
 var a = 0,
     b = 0;
 for (var i = 0; i < 10000; i++) {
-    if (AllIn() > Partition()) {
+    if (Partition(1) > Partition(6)) {
         a++;
     } else {
         b++;
